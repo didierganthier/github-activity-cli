@@ -1,13 +1,11 @@
 {
-  "name": "github-activity-cli",
+  "name": "github-activity",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI to fetch GitHub user activity",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "bin": {
+    "github-activity": "./index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "author": "Didier Peran Ganthier",
+  "license": "MIT"
 }

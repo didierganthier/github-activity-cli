@@ -1,5 +1,30 @@
+#!/usr/bin/env node
+
 const https = require('https');
-const username = process.argv[2];
+const args = process.argv.slice(2);
+
+if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+  console.log(`
+📦 GitHub Activity CLI
+
+Usage:
+  github-activity <username>
+
+Examples:
+  github-activity didierganthier
+  github-activity kamranahmedse
+
+Description:
+  Fetch and display recent public GitHub activity (commits, issues, stars, etc.)
+  for the specified user using the GitHub API.
+
+Options:
+  --help, -h       Show this help message
+`);
+  process.exit(0);
+}
+
+const username = args[0];
 
 if (!username) {
     console.error("❌ Please provide a GitHub username.");
