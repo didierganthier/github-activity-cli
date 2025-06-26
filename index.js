@@ -19,6 +19,7 @@ function colored(text, colorCode) {
 
 const https = require('https');
 const args = process.argv.slice(2);
+const outputAsJSON = args.includes('--json');
 
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(colored('📦 GitHub Activity CLI', color.cyan));
@@ -40,7 +41,7 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     process.exit(0);
 }
 
-const username = args[0];
+const username = args.find(arg => !arg.startsWith('--'));
 
 if (!username) {
     console.error(colored("❌ Please provide a GitHub username.", color.red));
@@ -74,7 +75,11 @@ const fetchGitHubActivity = (username) => {
                     if (events.length === 0) {
                         console.log(colored(`No recent activity found for user: ${username}`, color.red));
                     }
-                    displayActivity(events);
+                    if (outputAsJSON) {
+                        console.log(JSON.stringify(events, null, 2));
+                    } else {
+                        displayActivity(events);
+                    }
                 } catch (error) {
                     console.error(colored('❌ Error parsing response JSON.', color.red));
                 }
