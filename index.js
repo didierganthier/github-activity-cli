@@ -19,6 +19,8 @@ function colored(text, colorCode) {
 
 const https = require('https');
 const args = process.argv.slice(2);
+const typeArg = args.find(arg => arg.startsWith('--type='));
+const eventTypeFilter = typeArg ? typeArg.split('=')[1] : null;
 const outputAsJSON = args.includes('--json');
 
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
@@ -37,6 +39,8 @@ if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log();
     console.log(colored('Options:', color.yellow));
     console.log('  --help, -h       Show this help message');
+    console.log('  --type=<event>  Filter results by GitHub event type (e.g. PushEvent)');
+
 
     process.exit(0);
 }
@@ -78,7 +82,7 @@ const fetchGitHubActivity = (username) => {
                     if (outputAsJSON) {
                         console.log(JSON.stringify(events, null, 2));
                     } else {
-                        displayActivity(events);
+                        displayActivity(events, eventTypeFilter);
                     }
                 } catch (error) {
                     console.error(colored('❌ Error parsing response JSON.', color.red));
@@ -98,13 +102,22 @@ const fetchGitHubActivity = (username) => {
     req.end();
 }
 
-const displayActivity = (events) => {
+const displayActivity = (events, eventTypeFilter) => {
     if (events.length === 0) {
         console.log('No recent activity found');
         return;
     }
 
-    for (const event of events) {
+    const filtered = eventTypeFilter
+        ? events.filter(event => event.type === eventTypeFilter)
+        : events;
+
+    if (filtered.length === 0) {
+        console.log(colored(`No activity of type ${eventTypeFilter}.`, color.yellow));
+        return;
+    }
+
+    for (const event of filtered) {
         switch (event.type) {
             case 'PushEvent':
                 const commitCount = event.payload.commits?.length || 0;
