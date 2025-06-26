@@ -22,6 +22,13 @@ const args = process.argv.slice(2);
 const typeArg = args.find(arg => arg.startsWith('--type='));
 const eventTypeFilter = typeArg ? typeArg.split('=')[1] : null;
 const outputAsJSON = args.includes('--json');
+const limitArg = args.find(arg => arg.startsWith('--limit='));
+const limit = limitArg ? parseInt(limitArg.split('=')[1], 10) : null;
+
+if (limitArg && (isNaN(limit) || limit <= 0)) {
+    console.error(colored("❌ Invalid --limit value. Must be a positive number.", color.red));
+    process.exit(1);
+}
 
 if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(colored('📦 GitHub Activity CLI', color.cyan));
@@ -108,13 +115,17 @@ const displayActivity = (events, eventTypeFilter) => {
         return;
     }
 
-    const filtered = eventTypeFilter
+    let filtered = eventTypeFilter
         ? events.filter(event => event.type === eventTypeFilter)
         : events;
 
     if (filtered.length === 0) {
         console.log(colored(`No activity of type ${eventTypeFilter}.`, color.yellow));
         return;
+    }
+
+    if (limit) {
+        filtered = filtered.slice(0, limit);
     }
 
     for (const event of filtered) {
