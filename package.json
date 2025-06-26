@@ -1,11 +1,17 @@
 {
-  "name": "github-activity",
+  "name": "github-activity-cli",
   "version": "1.0.0",
-  "description": "CLI to fetch GitHub user activity",
+  "description": "A CLI tool to fetch and display recent GitHub activity for any user.",
   "main": "index.js",
   "bin": {
     "github-activity": "./index.js"
   },
+  "keywords": [
+    "github",
+    "cli",
+    "activity",
+    "events"
+  ],
   "author": "Didier Peran Ganthier",
-  "license": "MIT"
+  "license": "0BSD"
 }
