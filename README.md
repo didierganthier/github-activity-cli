@@ -8,7 +8,7 @@ A simple CLI tool to fetch and display recent public GitHub activity for any use
 ## Installation
 
 ```bash
-npm install -g github-activity-cli
+npm install -g gh-activity-cli
 ```
 
 ## Usage
