@@ -22,7 +22,7 @@ github-activity <username> [--json] [--type=PushEvent] [--limit=5]
 ```bash
 github-activity torvalds
 github-activity kamranahmedse --type=PushEvent --limit=3
-github-activity dganthier --json
+github-activity didierganthier --json
 github-activity someuser --limit=10
 ```
 
